@@ -1,6 +1,6 @@
-export interface Auth {
+export interface AuthResponseDto {
   token_type: string,
-  expires: number,
+  expire_in: number,
   access_token: string,
   refresh_token: string,
 }

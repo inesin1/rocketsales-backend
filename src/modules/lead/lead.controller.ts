@@ -1,11 +1,11 @@
 import { Controller, Get, HttpException, Query } from "@nestjs/common";
-import { LeadService } from '../services/lead.service';
-import { Lead } from "../types/Lead";
-import {User} from "../types/User";
-import {UserService} from "../services/user.service";
+import { LeadService } from './lead.service';
+import { Lead } from "../../types/Lead";
+import {User} from "../../types/User";
+import {UserService} from "../user/user.service";
 
 @Controller()
-export class AppController {
+export class LeadController {
   constructor(private readonly leadService: LeadService, private readonly userService: UserService) {}
 
   // Обработчик основного запроса для получения сделок и их контактов
@@ -20,7 +20,7 @@ export class AppController {
   }
 
   @Get('/api/users')
-  async getUsers(@Query('id') id: number): Promise<User | void> {
+  async getUsers(@Query('id') id: number): Promise<User | string> {
     try {
       return await this.userService.getUser(id);
     } catch (e) {
