@@ -5,7 +5,7 @@ const instance = axios.create({
     baseURL: 'https://jetbrainswebstorm1.amocrm.ru/api/v4/',
     headers: {
         'Content-Type': 'application/json',
-        'Authorization': `${amoCRMConfig.token.token_type} ${amoCRMConfig.token.access_token}`
+        'Authorization': `Bearer ${amoCRMConfig.getToken().access_token}`
     }
 })
 

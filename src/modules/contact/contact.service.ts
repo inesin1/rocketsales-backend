@@ -1,4 +1,4 @@
-import {Injectable} from "@nestjs/common";
+import {HttpException, Injectable} from "@nestjs/common";
 import {Contact} from "../../types/Contact";
 import axios from '../../config/axios.config'
 import { AuthService } from '../auth/auth.service';
@@ -10,10 +10,12 @@ export class ContactService {
     ) {}
 
     // Возвращает контакт по id
-    async getContact(id: number): Promise<Contact | string> {
+    async getContact(id: number): Promise<Contact | void> {
         try {
-            // Обновляем токен
-            await this.authService.refreshToken();
+            // Если токен истек, обновляем его
+            if (this.authService.isExpired()) {
+                await this.authService.refreshToken();
+            }
 
             // Делаем запрос на получение контакта по id
             const { data } = await axios.get(`contacts/${id}`)
@@ -26,8 +28,8 @@ export class ContactService {
                 email: data.custom_fields_values[1].field_name === 'Email' ? data.custom_fields_values[1].values[0].value : undefined,
             }
         } catch (e) {
-            console.log(`При выполнении запроса произошла ошибка: ${e}`);
-            return `При выполнении запроса произошла ошибка: ${e}`;
+            console.log(`При выполнении запроса произошла ошибка: ${e}. Ответ сервера: ${JSON.stringify(e.response.data)}`);
+            throw new HttpException(e.response.data, e.response.status);
         }
     }
 }

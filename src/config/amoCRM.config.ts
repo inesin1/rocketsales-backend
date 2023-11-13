@@ -1,14 +1,21 @@
-import { AuthResponseDto } from '../modules/auth/dto/auth-response.dto';
+import {AuthResponseDto} from "../modules/auth/dto/auth-response.dto";
+import { readFileSync } from 'fs';
+import { resolve } from 'path'
 
 export default {
     keys: {
         client_id: 'bf39c690-cc49-4771-833b-b65b77da0505',
         client_secret: 'jdYp764m9fTLVi3Oovor92Ho2PxyWMRJZ6xMnuharvCgVin5dekAKKN14RcM8AW9',
     },
-    token: {
-        token_type: 'Bearer',
-        expire_in: 86400,
-        access_token: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjU3NDI3ZmExZTg0ZTkxYzBjYzhiYTIwNzE3ZjA5NTQyYTY2MmI1NTQwOTg5MzI3NGNmMGMxMWJiMWZmODE3MWQ3ZmY2OTM1MWU2Y2RhZmMxIn0.eyJhdWQiOiJiZjM5YzY5MC1jYzQ5LTQ3NzEtODMzYi1iNjViNzdkYTA1MDUiLCJqdGkiOiI1NzQyN2ZhMWU4NGU5MWMwY2M4YmEyMDcxN2YwOTU0MmE2NjJiNTU0MDk4OTMyNzRjZjBjMTFiYjFmZjgxNzFkN2ZmNjkzNTFlNmNkYWZjMSIsImlhdCI6MTY5OTgwNjA4OSwibmJmIjoxNjk5ODA2MDg5LCJleHAiOjE2OTk4OTI0ODksInN1YiI6IjEwMzEzODkwIiwiZ3JhbnRfdHlwZSI6IiIsImFjY291bnRfaWQiOjMxMzk1MjgyLCJiYXNlX2RvbWFpbiI6ImFtb2NybS5ydSIsInZlcnNpb24iOjIsInNjb3BlcyI6WyJwdXNoX25vdGlmaWNhdGlvbnMiLCJmaWxlcyIsImNybSIsImZpbGVzX2RlbGV0ZSIsIm5vdGlmaWNhdGlvbnMiXX0.qxTkhAAB3Q-CiBP_K0dE0Ym0Mgi22IF1DiyOTnXrVe-O8YesAO8-f2C8mAjgu6oleAO9u7r7ScSnX1kVCEVL4854EhV0PH6pV26tTXAyVGNZqGlE7P2c5_W0CbGIHyS2Pviy1b3xFbxsZAxIw8HGgu0hWXRvgxNfl_1ftKO6AmV2jBO1Eni0z5L8TzLg5hbPkyw573gt65xZSEUIZrpS42Rjmwi0B9-sEWOPcZlQBCMMDiabA0Z3sK_beapuIfhnMgjnqQbOuBc8t9_uzTPwgfZvs0oN1JZnu9UJkeVrlUvSANkIB1OHUX8eCAuqKbfiwph0el4KPIvYMIOZhRQTwA',
-        refresh_token: 'def502000826f432cde0add8aae559fde2d9b5810241e8bb6e911b8f0547e94a0c7ef06b91ff38eddb1e4ef2a77c4b40ee044ead8e8662e34876eb8a75de9116ab14d8d72669319bdaeaab3eff07faf559fed2b499c8f3f038141b098cdf8e07250398b9628a9036394731b223eb6b6681b0976e73803d547c5923f0809433dcee03d9bfdab4eb1784215541c96c8a45a037910776342d0cf02b594ff4228330837325f337d08e692a72398045115ba6f0d5e3c53da85fc6f9828f85df0e4b9981d2ca947c792f980f78db9150c102b6aede2b708e34aa7d1d38a509ba9384a29cd2e9e2d875638e6d90b1a808569862a552574ebdbbff10a5302524909efce1d5172b46f1b83f69869d368334ab8f2ce7fccbd7d416cafc195ae913e899777ea69b3b04457e79790a0caa7f2fa47feaf254f1ed8005649eb7a00f73d6b77893708262d00587db5add875eae0c49c3b1a3caace1e6f08d70ddc937472d7bf88f3da386f7bd18ec6b4bb830d2546a23daa87d2f6243dd6732aaf8d793a1948ad0a3fe51f042feb0b2624c62bd3e133df58ed8a2a7e29c202ea38ffd2d6a47233ec5f7b0df7c1589c1541c67ca0b79d5e4b90fac4d6ed59c30b7cafd56cc13639bb6d4955944935abd85f7e3befc85825c4ea44b4d707996855c7ea7a37f67cfd93f54ae70352a97d4eec100622ecf'
-    } as AuthResponseDto
+    getToken: function (): AuthResponseDto {
+        try {
+            const data = readFileSync(
+                resolve(__dirname, '../../src/modules/auth/auth_token.json'),
+                'utf8'
+            );
+            return JSON.parse(data.toString());
+        } catch (e) {
+            console.log(`При чтении файла произошла ошибка: ${e}`)
+        }
+    }
 }
